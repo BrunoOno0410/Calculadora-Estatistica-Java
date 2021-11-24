@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package pief2;
 
 import java.awt.CardLayout;
@@ -10,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Stack;
 import java.util.StringTokenizer;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -101,7 +100,6 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton9 = new javax.swing.JButton();
-        jPanel16 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jPanel6 = new javax.swing.JPanel();
@@ -109,6 +107,9 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
         jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
+        jPanel16 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -185,9 +186,6 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
             }
         });
 
-        jPanel16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel16.setLayout(new java.awt.BorderLayout());
-
         jLabel3.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel3.setText("Selecione um grupo de dados:");
 
@@ -225,8 +223,7 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton9))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 735, Short.MAX_VALUE)
-                    .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 734, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 735, Short.MAX_VALUE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel15Layout.setVerticalGroup(
@@ -244,14 +241,12 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
                     .addComponent(jButton8))
                 .addGap(32, 32, 32)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9))
-                .addGap(20, 20, 20)
-                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addGap(284, 284, 284))
         );
 
         jPanel1.add(jPanel15, "tela1");
@@ -268,7 +263,7 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+            .addGap(0, 510, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel6, "tela2");
@@ -283,7 +278,7 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+            .addGap(0, 510, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel7, "tela3");
@@ -298,7 +293,7 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+            .addGap(0, 510, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel8, "tela4");
@@ -313,27 +308,60 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+            .addGap(0, 510, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel9, "tela5");
 
         jPanel10.setBackground(new java.awt.Color(217, 228, 236));
 
+        jPanel16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel16.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane2.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Dado", "Média", "Moda", "Mediana", "Quartil", "Desvio Padrão", "Coef. de Variação"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTable2);
+
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 780, Short.MAX_VALUE)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel10, "tela6");
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 88, 780, 640));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 88, 780, 510));
 
         jPanel3.setBackground(new java.awt.Color(217, 228, 236));
 
@@ -410,7 +438,7 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
         jPanel11.setPreferredSize(new java.awt.Dimension(590, 88));
 
         jButton3.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        jButton3.setText("Percentil");
+        jButton3.setText("<html>Coefiente de Variação</html>\n");
         jButton3.setBorderPainted(false);
         jButton3.setContentAreaFilled(false);
         jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -424,11 +452,11 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         jPanel12.setBackground(new java.awt.Color(183, 207, 220));
@@ -460,7 +488,7 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
         jPanel13.setPreferredSize(new java.awt.Dimension(590, 88));
 
         jButton5.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        jButton5.setText("<html>Coeficiente de Variação</html>");
+        jButton5.setText("<html>Gráfico e Tabela</html>");
         jButton5.setToolTipText("");
         jButton5.setBorderPainted(false);
         jButton5.setContentAreaFilled(false);
@@ -475,7 +503,7 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 118, Short.MAX_VALUE)
+            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -548,6 +576,7 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+//BOTÃO "PROCURAR"
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
 //Ação do botão "Procurar" para carregamento do arquivo com dados
         JFileChooser novo = new JFileChooser();
@@ -562,6 +591,8 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    
+//BOTÃO "CARREGAR"
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
 //Ação do botão "Carregar" para mostrar dados na Jtable
         FileReader scan = null;
@@ -612,11 +643,13 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
 //Ação do botão para gerar gráfico com base no grupo de dados escolhidos
         try {
+//Limpa o gráfico atual
+            jPanel16.removeAll();
 //Instância da classe apropriada do JFreeChart
             JFreeChart chart = ChartFactory.createXYLineChart(
-                "Gráfico de temperaturas",
+                "Gráfico " + jComboBox1.getSelectedItem(),
                 "Leituras",
-                "Temperaturas",
+                "" + jComboBox1.getSelectedItem(),
                 createXYDataset(),
                 PlotOrientation.VERTICAL,
                 true,
@@ -646,6 +679,83 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        Stack<Double> pilha = createArray();
+        double soma = 0;
+
+        for (int i = 0; i < pilha.size(); i++) {
+            soma += pilha.elementAt(i);
+        }
+
+//Media
+        double media = soma / pilha.size();
+
+//Moda = numMax
+        Stack<Double> listaNumeros = new Stack<>();
+
+        for (double elemento : pilha) {
+            listaNumeros.add(elemento);
+        }
+
+        double frequencia = Collections.frequency(listaNumeros, listaNumeros.get(0));
+        double numMax = listaNumeros.get(0);
+        double numRepeticoes = frequencia;
+
+        for (double elemento : listaNumeros) {
+            frequencia = Collections.frequency(listaNumeros, elemento);
+            if (frequencia > numRepeticoes) {
+                numMax = elemento;
+                //numRepeticoes = frequencia;
+            }
+        }
+
+//Mediana
+        Collections.sort(listaNumeros);
+
+        double mediana;
+        int verificaPar = listaNumeros.size() % 2;
+
+        if (verificaPar == 0){
+        mediana = ( listaNumeros.get(
+            ((listaNumeros.size() / 2) - 1))
+            + (listaNumeros.get(listaNumeros.size() /2))
+        ) / 2;
+        System.out.println(listaNumeros.get(
+            ((listaNumeros.size() / 2))));
+        }else {
+            mediana = listaNumeros.get(listaNumeros.size() / 2);
+        }
+
+//Primeiro quartil
+        Collections.sort(pilha);
+
+        int index = (int) Math.ceil(25 / 100.0 * pilha.size());
+        double quartil = pilha.get(index-1);
+
+//Desvio padrão
+        double desvioPadrao = 0;
+        Double _desvioPadrao = 0D;
+        for (Double elemento : pilha) {
+            Double aux = elemento - media;
+            _desvioPadrao += aux * aux;
+        }
+        desvioPadrao = Math.sqrt(_desvioPadrao / pilha.size());
+
+//Coeficiente de variação
+        double coeficienteVariacao = desvioPadrao / media;
+
+//Juntar tudo em uma array
+        String[] linha = {"" + jComboBox1.getSelectedItem(),
+            String.valueOf(media), 
+            String.valueOf(numMax),
+            String.valueOf(mediana),
+            String.valueOf(quartil), 
+            String.valueOf(desvioPadrao),
+            String.valueOf(coeficienteVariacao)
+        };
+//Adicionar uma linha a tabela
+        ((DefaultTableModel)jTable2.getModel()).addRow(linha);
+        
+//Adicionar resultados às suas respectivas abas 
 
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
@@ -688,19 +798,34 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
     private XYDataset createXYDataset() {
 //Criação do modelo de gráfico
         XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries serie = new XYSeries("variação da temperatura");
-//Inserir o conjunto de valores, um para cada linha da tabela. Ex.:
+        XYSeries serie = new XYSeries("Variação da " + jComboBox1.getSelectedItem());
+        
+//Inserir o conjunto de valores, um para cada linha da tabela. Ex.:        
         DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
         int n = tableModel.getRowCount();
         for (int i = 0; i < n; i++) {
             serie.add(i + 1,
-                    Double.parseDouble(tableModel.getValueAt(i, 2).toString().replace(',', '.')));
+                    Double.parseDouble(tableModel.getValueAt(i, jComboBox1.getSelectedIndex()).toString().replace(',', '.')));
         }
-//Adicionar a série ao dataset e retornar
+    
+//Adicionar a série ao dataset e retornar    
         dataset.addSeries(serie);
         return dataset;
     }
+    
+    private Stack<Double> createArray() {
 
+        Stack<Double> array = new Stack<>();
+        DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
+        int n = tableModel.getRowCount();
+        for (int i = 0; i < n; i++) {
+            array.push(Double.parseDouble(tableModel.getValueAt(i, jComboBox1.getSelectedIndex()).toString().replace(',', '.')));
+        }
+        return array;
+    }
+
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -768,7 +893,9 @@ ImageIcon icone = new ImageIcon("Images/Vector.png");
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
