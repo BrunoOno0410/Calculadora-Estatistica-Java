@@ -1,11 +1,12 @@
-
 package pief2;
 
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Stack;
@@ -127,6 +128,8 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         jPanel16 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jButton9 = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -446,25 +449,45 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         });
         jScrollPane2.setViewportView(jTable2);
 
+        jButton9.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jButton9.setText("Salvar");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel13.setText("Salva tabela em um arquivo");
+
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE))
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton9))
+                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane2)
+                        .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton9)
+                    .addComponent(jLabel13))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel10, "tela6");
@@ -914,6 +937,37 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         setCor(6); resetCor(6);
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        try {
+//Abre filewriter e buffer do writer
+            FileWriter writer = new FileWriter("Tabela.txt");
+            BufferedWriter writerbuffer = new BufferedWriter(writer);
+            
+//Reescreve os headers
+            writerbuffer.write("Dado" + jTextField2.getText()
+                            + "Média" + jTextField2.getText() 
+                            + "Moda" + jTextField2.getText() 
+                            + "Quartil" + jTextField2.getText() 
+                            + "Desvio Padrão" + jTextField2.getText()
+                            + "Coef. de Variação");
+            
+//Escreve todas as linhas de alunos e seus dados            
+            for (int i = 0; i < jTable2.getRowCount(); i++) {
+                writerbuffer.write("\n");
+                for (int j = 0; j < jTable2.getColumnCount(); j++) {   
+                    writerbuffer.write(jTable2.getModel().getValueAt(i, j) + ((j == jTable2.getColumnCount() - 1)?"":";")); 
+                }
+            }           
+            
+//Fecha o writer e o buffer do writer
+            writerbuffer.close();
+            writer.close();
+              
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton9ActionPerformed
+
     private XYDataset createXYDataset() {
 //Criação do modelo de gráfico
         XYSeriesCollection dataset = new XYSeriesCollection();
@@ -942,8 +996,6 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         }
         return array;
     }
-
-    
     
     /**
      * @param args the command line arguments
@@ -989,11 +1041,13 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
