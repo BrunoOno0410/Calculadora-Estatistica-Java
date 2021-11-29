@@ -3,7 +3,6 @@ package pief2;
 import java.util.*;  
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.List;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -27,9 +26,6 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.statistics.HistogramBin;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
-import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 
 /**
  *
@@ -985,8 +981,7 @@ public class Calculadora extends javax.swing.JFrame {
                 this.getContentPane().validate();
                 this.getContentPane().repaint();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage(),
-                        "ERRO", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
             }
 
             Stack<Double> pilha = createArray();
@@ -1014,7 +1009,6 @@ public class Calculadora extends javax.swing.JFrame {
                 frequencia = Collections.frequency(listaNumeros, elemento);
                 if (frequencia > numRepeticoes) {
                     numMax = elemento;
-                    //numRepeticoes = frequencia;
                 }
             }
 
@@ -1028,8 +1022,6 @@ public class Calculadora extends javax.swing.JFrame {
                 mediana = (listaNumeros.get(
                         ((listaNumeros.size() / 2) - 1))
                         + (listaNumeros.get(listaNumeros.size() / 2))) / 2;
-                System.out.println(listaNumeros.get(
-                        ((listaNumeros.size() / 2))));
             } else {
                 mediana = listaNumeros.get(listaNumeros.size() / 2);
             }
@@ -1100,8 +1092,8 @@ public class Calculadora extends javax.swing.JFrame {
         dataset.setType(HistogramType.RELATIVE_FREQUENCY);
         dataset.addSeries("Hist", serie, amplitude/classes);
         String plotTitle = "Histograma";
-        String xAxis = "Value";
-        String yAxis = "Frequency";
+        String xAxis = "Valor";
+        String yAxis = "Frequencia";
         PlotOrientation orientation = PlotOrientation.VERTICAL;
         boolean show = false;
         boolean toolTips = false;
@@ -1195,24 +1187,6 @@ public class Calculadora extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton9ActionPerformed
-
-    /*private XYDataset createXYDataset() {
-//Criação do modelo de gráfico
-        XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries serie = new XYSeries("Variação da " + jComboBox1.getSelectedItem());
-
-//Inserir o conjunto de valores, um para cada linha da tabela. Ex.:        
-        DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
-        int n = tableModel.getRowCount();
-        for (int i = 0; i < n; i++) {
-            serie.add(i + 1,
-                    Double.parseDouble(tableModel.getValueAt(i, jComboBox1.getSelectedIndex()).toString().replace(',', '.')));
-        }
-
-//Adicionar a série ao dataset e retornar    
-        dataset.addSeries(serie);
-        return dataset;
-    }*/
 
     private Stack<Double> createArray() {
 
