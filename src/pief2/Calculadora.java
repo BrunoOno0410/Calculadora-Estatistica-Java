@@ -1,7 +1,9 @@
 package pief2;
 
+import java.util.*;  
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.List;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,6 +24,9 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.statistics.HistogramBin;
+import org.jfree.data.statistics.HistogramDataset;
+import org.jfree.data.statistics.HistogramType;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -41,6 +46,11 @@ public class Calculadora extends javax.swing.JFrame {
         jLabel4.setIcon(icone);
         jLabel9.setIcon(quartil);
         jLabel10.setIcon(quartilformula);
+        jLabel14.setIcon(media);
+        jLabel15.setIcon(moda);
+        jLabel20.setIcon(mediana);
+        jLabel27.setIcon(coeficiente);
+        jLabel28.setIcon(desvio);
     }
 
     /**
@@ -53,44 +63,85 @@ public class Calculadora extends javax.swing.JFrame {
     File file = null;
 
 //Importar imagens     
-ImageIcon icone = new ImageIcon("Images/Vector.png");
-ImageIcon quartil = new ImageIcon("Images/Quartil.png");
-ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
+    ImageIcon icone = new ImageIcon("Images/Vector.png");
+    ImageIcon quartil = new ImageIcon("Images/Quartil.png");
+    ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
+    ImageIcon media = new ImageIcon("Images/media.jpeg"); 
+    ImageIcon moda = new ImageIcon("Images/moda1.png");
+    ImageIcon mediana = new ImageIcon("Images/mediana.png");
+    ImageIcon coeficiente = new ImageIcon("Images/coef.png");
+    ImageIcon desvio = new ImageIcon("Images/desviopadrao.png");
 
-
-    
 //Paleta de cores utilizados no programa
-    Color escuro = new Color(160,175,183); //Criação da cor azul escuro (para botões "apertados")
-    Color claro = new Color(183,207,220); //Criação da cor azul claro (para botoões que não estão sendo utilizados)
-    
+    Color escuro = new Color(160, 175, 183); //Criação da cor azul escuro (para botões "apertados")
+    Color claro = new Color(183, 207, 220); //Criação da cor azul claro (para botoões que não estão sendo utilizados)
+
 //Função de escurecer os botões
-    private void setCor(int aux)
-    {
-        switch (aux) 
-        {
-            case 1 -> jPanel14.setBackground(escuro);
-            case 2 -> jPanel4.setBackground(escuro);
-            case 3 -> jPanel5.setBackground(escuro);          
-            case 4 -> jPanel11.setBackground(escuro);  
-            case 5 -> jPanel12.setBackground(escuro);
-            case 6 -> jPanel13.setBackground(escuro);
+    private void setCor(int aux) {
+        switch (aux) {
+            case 1 ->
+                jPanel14.setBackground(escuro);
+            case 2 ->
+                jPanel4.setBackground(escuro);
+            case 3 ->
+                jPanel5.setBackground(escuro);
+            case 4 ->
+                jPanel11.setBackground(escuro);
+            case 5 ->
+                jPanel12.setBackground(escuro);
+            case 6 ->
+                jPanel13.setBackground(escuro);
         }
     }
-    
-    private void resetCor(int aux)
-    {
-        switch (aux) 
-        {
-            case 1 -> {jPanel4.setBackground(claro); jPanel5.setBackground(claro); jPanel11.setBackground(claro); jPanel12.setBackground(claro); jPanel13.setBackground(claro);}
-            case 2 -> {jPanel14.setBackground(claro); jPanel5.setBackground(claro); jPanel11.setBackground(claro); jPanel2.setBackground(claro); jPanel13.setBackground(claro);}
-            case 3 -> {jPanel14.setBackground(claro); jPanel4.setBackground(claro); jPanel11.setBackground(claro); jPanel12.setBackground(claro); jPanel13.setBackground(claro);}         
-            case 4 -> {jPanel14.setBackground(claro); jPanel4.setBackground(claro); jPanel5.setBackground(claro); jPanel12.setBackground(claro); jPanel13.setBackground(claro);} 
-            case 5 -> {jPanel14.setBackground(claro); jPanel4.setBackground(claro); jPanel5.setBackground(claro); jPanel11.setBackground(claro); jPanel13.setBackground(claro);}
-            case 6 -> {jPanel14.setBackground(claro); jPanel4.setBackground(claro); jPanel5.setBackground(claro); jPanel11.setBackground(claro); jPanel12.setBackground(claro);}
+
+    private void resetCor(int aux) {
+        switch (aux) {
+            case 1 -> {
+                jPanel4.setBackground(claro);
+                jPanel5.setBackground(claro);
+                jPanel11.setBackground(claro);
+                jPanel12.setBackground(claro);
+                jPanel13.setBackground(claro);
+            }
+            case 2 -> {
+                jPanel14.setBackground(claro);
+                jPanel5.setBackground(claro);
+                jPanel11.setBackground(claro);
+                jPanel2.setBackground(claro);
+                jPanel13.setBackground(claro);
+            }
+            case 3 -> {
+                jPanel14.setBackground(claro);
+                jPanel4.setBackground(claro);
+                jPanel11.setBackground(claro);
+                jPanel12.setBackground(claro);
+                jPanel13.setBackground(claro);
+            }
+            case 4 -> {
+                jPanel14.setBackground(claro);
+                jPanel4.setBackground(claro);
+                jPanel5.setBackground(claro);
+                jPanel12.setBackground(claro);
+                jPanel13.setBackground(claro);
+            }
+            case 5 -> {
+                jPanel14.setBackground(claro);
+                jPanel4.setBackground(claro);
+                jPanel5.setBackground(claro);
+                jPanel11.setBackground(claro);
+                jPanel13.setBackground(claro);
+            }
+            case 6 -> {
+                jPanel14.setBackground(claro);
+                jPanel4.setBackground(claro);
+                jPanel5.setBackground(claro);
+                jPanel11.setBackground(claro);
+                jPanel12.setBackground(claro);
+            }
         }
     }
-    
-    
+
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -113,6 +164,19 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
@@ -121,9 +185,14 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         jPanel8 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jTextField7 = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jTextField8 = new javax.swing.JTextField();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -213,26 +282,27 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel15Layout.createSequentialGroup()
-                        .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel15Layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
-                                .addComponent(jButton7))
-                            .addGroup(jPanel15Layout.createSequentialGroup()
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(57, 57, 57)
-                                .addComponent(jButton8))))
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel15Layout.createSequentialGroup()
+                            .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1)
+                                .addComponent(jLabel2))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel15Layout.createSequentialGroup()
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
+                                    .addComponent(jButton7))
+                                .addGroup(jPanel15Layout.createSequentialGroup()
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(57, 57, 57)
+                                    .addComponent(jButton8))))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 735, Short.MAX_VALUE))
                     .addGroup(jPanel15Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 735, Short.MAX_VALUE))
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel15Layout.setVerticalGroup(
@@ -248,13 +318,13 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
                     .addComponent(jLabel2)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton8))
-                .addGap(32, 32, 32)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(285, 285, 285))
+                .addGap(39, 39, 39))
         );
 
         jPanel1.add(jPanel15, "tela1");
@@ -264,7 +334,7 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         jPanel6.setName(""); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel5.setText("Media");
+        jLabel5.setText("Média");
 
         jLabel6.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel6.setText("Moda");
@@ -281,39 +351,119 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         jTextField5.setEditable(false);
         jTextField5.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
+        jLabel16.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel16.setText("Ii : limite inferior da classe modal ");
+
+        jLabel17.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel17.setText("<html>D1 : diferença entre classe modal e da classe anterior</html>");
+
+        jLabel18.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel18.setText("<html>D2 : diferença entre classe modal e da classe posterior</html>");
+
+        jLabel19.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel19.setText("h : amplitude da classe modal");
+
+        jLabel21.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel21.setText("li : limite inferior da classe mediana");
+
+        jLabel22.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel22.setText("<html>fac_ant : freq. acumulada da classe antecessora à classe mediana</html>");
+
+        jLabel23.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel23.setText("fi : freq. simples da classe mediana");
+
+        jLabel24.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel24.setText("h : amplitude da classe mediana");
+
+        jLabel25.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel25.setText("Xn : lista de números ");
+
+        jLabel26.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel26.setText("n : número de dados");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel5))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
-                    .addComponent(jTextField4)
-                    .addComponent(jTextField5))
-                .addContainerGap(502, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(33, 33, 33)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel25)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel21)
+                                .addComponent(jLabel16)
+                                .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel19)
+                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel23)
+                                .addComponent(jLabel24))
+                            .addComponent(jLabel26))))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(24, 24, 24)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel25)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel26)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(70, 70, 70)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel19)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGap(88, 88, 88)
+                    .addComponent(jLabel6)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel21)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel23)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel24)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(240, Short.MAX_VALUE))
+                .addGap(32, 32, 32))
         );
 
         jPanel1.add(jPanel6, "tela2");
@@ -340,7 +490,7 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
                         .addGap(50, 50, 50)
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(229, 229, 229)
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -374,21 +524,27 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap(146, Short.MAX_VALUE)
+                .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(146, 146, 146))
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(49, 49, 49)
+                .addGap(50, 50, 50)
                 .addComponent(jLabel11)
-                .addGap(18, 18, 18)
-                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(404, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(77, 77, 77)
+                .addGap(48, 48, 48)
+                .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(410, Short.MAX_VALUE))
+                .addContainerGap(258, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel8, "tela4");
@@ -401,25 +557,55 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         jTextField8.setEditable(false);
         jTextField8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
+        jLabel29.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel29.setText("Xi : valor individual");
+
+        jLabel30.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel30.setText("x' : média dos valores");
+
+        jLabel31.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel31.setText("n : número de valores");
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(jLabel12)
-                .addGap(18, 18, 18)
-                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(454, Short.MAX_VALUE))
+                .addGap(52, 52, 52)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel31)
+                        .addGroup(jPanel9Layout.createSequentialGroup()
+                            .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(57, 57, 57)
+                            .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel29)
+                                .addComponent(jLabel30)))))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(71, 71, 71)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel29)
+                        .addGap(45, 45, 45)
+                        .addComponent(jLabel30)
+                        .addGap(50, 50, 50)
+                        .addComponent(jLabel31)))
+                .addGap(46, 46, 46)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(416, Short.MAX_VALUE))
+                .addContainerGap(244, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel9, "tela5");
@@ -427,7 +613,7 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         jPanel10.setBackground(new java.awt.Color(217, 228, 236));
 
         jPanel16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel16.setLayout(new java.awt.BorderLayout());
+        jPanel16.setLayout(new javax.swing.BoxLayout(jPanel16, javax.swing.BoxLayout.LINE_AXIS));
 
         jScrollPane2.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
@@ -520,7 +706,7 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         jButton1.setText("<html>Media Moda e Mediana</html>");
         jButton1.setBorderPainted(false);
         jButton1.setContentAreaFilled(false);
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setPreferredSize(new java.awt.Dimension(118, 88));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -547,7 +733,7 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         jButton2.setText("Quartil");
         jButton2.setBorderPainted(false);
         jButton2.setContentAreaFilled(false);
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -572,7 +758,7 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         jButton3.setText("<html>Coefiente de Variação</html>\n");
         jButton3.setBorderPainted(false);
         jButton3.setContentAreaFilled(false);
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -597,7 +783,7 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         jButton4.setText("<html>Desvio Padrão</html>");
         jButton4.setBorderPainted(false);
         jButton4.setContentAreaFilled(false);
-        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -623,7 +809,7 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         jButton5.setToolTipText("");
         jButton5.setBorderPainted(false);
         jButton5.setContentAreaFilled(false);
-        jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
@@ -648,7 +834,7 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         jButton6.setText("MENU");
         jButton6.setBorderPainted(false);
         jButton6.setContentAreaFilled(false);
-        jButton6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton6.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -723,7 +909,7 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
     }//GEN-LAST:event_jButton7ActionPerformed
 
     boolean ok = false;
-    
+
 //BOTÃO "CARREGAR"
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
 //Ação do botão "Carregar" para mostrar dados na Jtable
@@ -745,12 +931,10 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
                 jComboBox1.addItem(theader[i]);
             }
 
-            
 //Aplica novo modelo de table ao jTable1
             DefaultTableModel newModel = new DefaultTableModel(theader, 0);
             jTable1.setModel(newModel);
 
-            
 //Cria as linhas
             String line = buffer.readLine();
             while (line != null) {
@@ -777,164 +961,208 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
 
 //COMBO BOX DE SELEÇÃO DE DADOS
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        if(ok) {
-        
-//Ação do botão para gerar gráfico com base no grupo de dados escolhidos
-        try {
-//Limpa o gráfico atual
-            jPanel16.removeAll();
-//Instância da classe apropriada do JFreeChart
-            JFreeChart chart = ChartFactory.createXYLineChart(
-                "Gráfico " + jComboBox1.getSelectedItem(),
-                "Leituras",
-                "" + jComboBox1.getSelectedItem(),
-                createXYDataset(),
-                PlotOrientation.VERTICAL,
-                true,
-                true,
-                false
-            );
-//Algumas customizações (cores)
-            chart.setBackgroundPaint(Color.white);
-            XYPlot plot = chart.getXYPlot();
-            plot.setBackgroundPaint(Color.lightGray);
-            plot.setDomainGridlinePaint(Color.white);
-            plot.setRangeGridlinePaint(Color.white);
-//Configuração dos eixos e escalas
-            NumberAxis axis = (NumberAxis) plot.getDomainAxis();
-            axis.setTickUnit(new NumberTickUnit(10));
-//Criação do painel do gráfico e inserção no painel (jPainel1) da janela
-            ChartPanel chartPanel = new ChartPanel(chart);
-            chartPanel.setPreferredSize(jPanel1.getSize());
-            jPanel16.add(chartPanel, java.awt.BorderLayout.CENTER);
-            this.getContentPane().validate();
-            this.getContentPane().repaint();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(),
-                    "ERRO", JOptionPane.ERROR_MESSAGE);
-        }    
-            
-        Stack<Double> pilha = createArray();
-        double soma = 0;
+        if (ok) {
 
-        for (int i = 0; i < pilha.size(); i++) {
-            soma += pilha.elementAt(i);
-        }
+//Ação do botão para gerar gráfico com base no grupo de dados escolhidos
+            try {
+//Limpa o gráfico atual
+                jPanel16.removeAll();
+//Instância da classe apropriada do JFreeChart
+                JFreeChart chart = buildHistogram();
+//Algumas customizações (cores)
+                chart.setBackgroundPaint(Color.white);
+                XYPlot plot = chart.getXYPlot();
+                plot.setBackgroundPaint(Color.lightGray);
+                plot.setDomainGridlinePaint(Color.white);
+                plot.setRangeGridlinePaint(Color.white);
+//Configuração dos eixos e escalas
+                NumberAxis axis = (NumberAxis) plot.getDomainAxis();
+                axis.setTickUnit(new NumberTickUnit(10));
+//Criação do painel do gráfico e inserção no painel (jPainel1) da janela
+                ChartPanel chartPanel = new ChartPanel(chart);
+                chartPanel.setPreferredSize(jPanel1.getSize());
+                jPanel16.add(chartPanel, java.awt.BorderLayout.CENTER);
+                this.getContentPane().validate();
+                this.getContentPane().repaint();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "ERRO", JOptionPane.ERROR_MESSAGE);
+            }
+
+            Stack<Double> pilha = createArray();
+            double soma = 0;
+
+            for (int i = 0; i < pilha.size(); i++) {
+                soma += pilha.elementAt(i);
+            }
 
 //Media
-        double media = soma / pilha.size();
+            double media = soma / pilha.size();
 
 //Moda = numMax
-        Stack<Double> listaNumeros = new Stack<>();
+            Stack<Double> listaNumeros = new Stack<>();
 
-        for (double elemento : pilha) {
-            listaNumeros.add(elemento);
-        }
-
-        double frequencia = Collections.frequency(listaNumeros, listaNumeros.get(0));
-        double numMax = listaNumeros.get(0);
-        double numRepeticoes = frequencia;
-
-        for (double elemento : listaNumeros) {
-            frequencia = Collections.frequency(listaNumeros, elemento);
-            if (frequencia > numRepeticoes) {
-                numMax = elemento;
-                //numRepeticoes = frequencia;
+            for (double elemento : pilha) {
+                listaNumeros.add(elemento);
             }
-        }
+
+            double frequencia = Collections.frequency(listaNumeros, listaNumeros.get(0));
+            double numMax = listaNumeros.get(0);
+            double numRepeticoes = frequencia;
+
+            for (double elemento : listaNumeros) {
+                frequencia = Collections.frequency(listaNumeros, elemento);
+                if (frequencia > numRepeticoes) {
+                    numMax = elemento;
+                    //numRepeticoes = frequencia;
+                }
+            }
 
 //Mediana
-        Collections.sort(listaNumeros);
+            Collections.sort(listaNumeros);
 
-        double mediana;
-        int verificaPar = listaNumeros.size() % 2;
+            double mediana;
+            int verificaPar = listaNumeros.size() % 2;
 
-        if (verificaPar == 0){
-        mediana = ( listaNumeros.get(
-            ((listaNumeros.size() / 2) - 1))
-            + (listaNumeros.get(listaNumeros.size() /2))
-        ) / 2;
-        System.out.println(listaNumeros.get(
-            ((listaNumeros.size() / 2))));
-        }else {
-            mediana = listaNumeros.get(listaNumeros.size() / 2);
-        }
+            if (verificaPar == 0) {
+                mediana = (listaNumeros.get(
+                        ((listaNumeros.size() / 2) - 1))
+                        + (listaNumeros.get(listaNumeros.size() / 2))) / 2;
+                System.out.println(listaNumeros.get(
+                        ((listaNumeros.size() / 2))));
+            } else {
+                mediana = listaNumeros.get(listaNumeros.size() / 2);
+            }
 
 //Primeiro quartil
-        Collections.sort(pilha);
+            Collections.sort(pilha);
 
-        int index = (int) Math.ceil(25 / 100.0 * pilha.size());
-        double quartil = pilha.get(index-1);
+            int index = (int) Math.ceil(25 / 100.0 * pilha.size());
+            double quartil = pilha.get(index - 1);
 
 //Desvio padrão
-        double desvioPadrao = 0;
-        Double _desvioPadrao = 0D;
-        for (Double elemento : pilha) {
-            Double aux = elemento - media;
-            _desvioPadrao += aux * aux;
-        }
-        desvioPadrao = Math.sqrt(_desvioPadrao / pilha.size());
+            double desvioPadrao = 0;
+            Double _desvioPadrao = 0D;
+            for (Double elemento : pilha) {
+                Double aux = elemento - media;
+                _desvioPadrao += aux * aux;
+            }
+            desvioPadrao = Math.sqrt(_desvioPadrao / pilha.size());
 
 //Coeficiente de variação
-        double coeficienteVariacao = desvioPadrao / media;
+            double coeficienteVariacao = desvioPadrao / media;
 
 //Juntar tudo em uma array
-        String[] linha = {"" + jComboBox1.getSelectedItem(),
-            String.valueOf(media), 
-            String.valueOf(numMax),
-            String.valueOf(mediana),
-            String.valueOf(quartil), 
-            String.valueOf(desvioPadrao),
-            String.valueOf(coeficienteVariacao)
-        };
+            String[] linha = {"" + jComboBox1.getSelectedItem(),
+                String.valueOf(media),
+                String.valueOf(numMax),
+                String.valueOf(mediana),
+                String.valueOf(quartil),
+                String.valueOf(desvioPadrao),
+                String.valueOf(coeficienteVariacao)
+            };
 //Adicionar uma linha a tabela
-        ((DefaultTableModel)jTable2.getModel()).addRow(linha);
-        
+            ((DefaultTableModel) jTable2.getModel()).addRow(linha);
+
 //Adicionar resultados às suas respectivas abas 
-        jTextField3.setText(String.valueOf(media));
-        jTextField4.setText(String.valueOf(numMax));
-        jTextField5.setText(String.valueOf(mediana));
-        jTextField6.setText(String.valueOf(quartil));
-        jTextField7.setText(String.valueOf(coeficienteVariacao));
-        jTextField8.setText(String.valueOf(desvioPadrao));
+            jTextField3.setText(String.valueOf(media));
+            jTextField4.setText(String.valueOf(numMax));
+            jTextField5.setText(String.valueOf(mediana));
+            jTextField6.setText(String.valueOf(quartil));
+            jTextField7.setText(String.valueOf(coeficienteVariacao));
+            jTextField8.setText(String.valueOf(desvioPadrao));
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    private JFreeChart buildHistogram() {
+        
+        Stack<Double> array = new Stack<>();
+        
+        DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
+        int n = tableModel.getRowCount();
+        for (int i = 0; i < n; i++) {
+            array.push(Double.parseDouble(tableModel.getValueAt(i, jComboBox1.getSelectedIndex()).toString().replace(',', '.')));
+        }
+
+        double[] serie = array.stream().mapToDouble(Double::doubleValue).toArray();
+        
+        int lowest = (int) getLowest(serie);
+        int higher = (int) getHigher(serie);
+        int amplitude = higher - lowest;
+        int classes = 2;
+        
+        
+        HistogramBin bin = new HistogramBin(lowest, higher);
+        
+
+        
+        HistogramDataset dataset = new HistogramDataset();
+        dataset.setType(HistogramType.RELATIVE_FREQUENCY);
+        dataset.addSeries("Hist", serie, amplitude/classes);
+        String plotTitle = "Histograma";
+        String xAxis = "Value";
+        String yAxis = "Frequency";
+        PlotOrientation orientation = PlotOrientation.VERTICAL;
+        boolean show = false;
+        boolean toolTips = false;
+        boolean urls = false;
+        JFreeChart chart = ChartFactory.createHistogram(plotTitle, xAxis, yAxis,
+                dataset, orientation, show, toolTips, urls);
+        chart.setBackgroundPaint(Color.white);
+        return chart;
+    }
+
+    private double getLowest(double[] array) {
+        Arrays.sort(array);  
+        return array[0];
+    }
+    
+    private double getHigher(double[] array) {
+        Arrays.sort(array);  
+        return array[array.length-1];
+    }
+    
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         CardLayout trocaTela = (CardLayout) jPanel1.getLayout();
         trocaTela.show(jPanel1, "tela1");
-        setCor(1); resetCor(1);
+        setCor(1);
+        resetCor(1);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         CardLayout trocaTela = (CardLayout) jPanel1.getLayout();
         trocaTela.show(jPanel1, "tela2");
-        setCor(2); resetCor(2);
+        setCor(2);
+        resetCor(2);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         CardLayout trocaTela = (CardLayout) jPanel1.getLayout();
         trocaTela.show(jPanel1, "tela3");
-        setCor(3); resetCor(3);
-        
+        setCor(3);
+        resetCor(3);
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         CardLayout trocaTela = (CardLayout) jPanel1.getLayout();
         trocaTela.show(jPanel1, "tela4");
-        setCor(4); resetCor(4);
+        setCor(4);
+        resetCor(4);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         CardLayout trocaTela = (CardLayout) jPanel1.getLayout();
         trocaTela.show(jPanel1, "tela5");
-        setCor(5); resetCor(5);
+        setCor(5);
+        resetCor(5);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         CardLayout trocaTela = (CardLayout) jPanel1.getLayout();
         trocaTela.show(jPanel1, "tela6");
-        setCor(6); resetCor(6);
+        setCor(6);
+        resetCor(6);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -942,37 +1170,37 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
 //Abre filewriter e buffer do writer
             FileWriter writer = new FileWriter("Tabela.txt");
             BufferedWriter writerbuffer = new BufferedWriter(writer);
-            
+
 //Reescreve os headers
             writerbuffer.write("Dado" + jTextField2.getText()
-                            + "Média" + jTextField2.getText() 
-                            + "Moda" + jTextField2.getText() 
-                            + "Quartil" + jTextField2.getText() 
-                            + "Desvio Padrão" + jTextField2.getText()
-                            + "Coef. de Variação");
-            
+                    + "Média" + jTextField2.getText()
+                    + "Moda" + jTextField2.getText()
+                    + "Quartil" + jTextField2.getText()
+                    + "Desvio Padrão" + jTextField2.getText()
+                    + "Coef. de Variação");
+
 //Escreve todas as linhas de alunos e seus dados            
             for (int i = 0; i < jTable2.getRowCount(); i++) {
                 writerbuffer.write("\n");
-                for (int j = 0; j < jTable2.getColumnCount(); j++) {   
-                    writerbuffer.write(jTable2.getModel().getValueAt(i, j) + ((j == jTable2.getColumnCount() - 1)?"":";")); 
+                for (int j = 0; j < jTable2.getColumnCount(); j++) {
+                    writerbuffer.write(jTable2.getModel().getValueAt(i, j) + ((j == jTable2.getColumnCount() - 1) ? "" : ";"));
                 }
-            }           
-            
+            }
+
 //Fecha o writer e o buffer do writer
             writerbuffer.close();
             writer.close();
-              
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton9ActionPerformed
 
-    private XYDataset createXYDataset() {
+    /*private XYDataset createXYDataset() {
 //Criação do modelo de gráfico
         XYSeriesCollection dataset = new XYSeriesCollection();
         XYSeries serie = new XYSeries("Variação da " + jComboBox1.getSelectedItem());
-        
+
 //Inserir o conjunto de valores, um para cada linha da tabela. Ex.:        
         DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
         int n = tableModel.getRowCount();
@@ -980,12 +1208,12 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
             serie.add(i + 1,
                     Double.parseDouble(tableModel.getValueAt(i, jComboBox1.getSelectedIndex()).toString().replace(',', '.')));
         }
-    
+
 //Adicionar a série ao dataset e retornar    
         dataset.addSeries(serie);
         return dataset;
-    }
-    
+    }*/
+
     private Stack<Double> createArray() {
 
         Stack<Double> array = new Stack<>();
@@ -996,7 +1224,7 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
         }
         return array;
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -1048,8 +1276,26 @@ ImageIcon quartilformula = new ImageIcon("Images/quartilformula.png");
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
