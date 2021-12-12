@@ -1,0 +1,17 @@
+MODELO;VMAX;VMED;VMIN;FABRICAÇÃO
+Sexto Elemento;400;250;20;2010
+Porsche 911;350;220;10;2015
+Aventador;420;210;20;2012
+Ferrari F40;350;240;20;1999
+Mustang GT;300;190;35;2018
+Hoonigan RS200;300;180;25;1985
+Ford Shelby GT500;290;190;20;2020
+Porsche Taycan Turbo;180;150;30;2019
+Lancer Evo X;170;140;25;2008
+Corvette Stingray;220;180;20;2020
+Jaguar F-Type;180;130;15;2016
+Ferrari 488 Pista;380;240;30;2019
+McLaren Senna;400;230;25;2018
+Pagani Huayra;390;210;20;2016
+Koenigsegg Jesko;450;260;10;2020
+BAC Mono;300;200;15;2014
